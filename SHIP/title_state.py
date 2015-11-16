@@ -8,15 +8,16 @@ name = "TitleState"
 image = None
 
 
+
 def enter():
     global image
+    open_canvas()
     image = load_image('title.png')
 
 
 def exit():
     global image
     del(image)
-
 
 
 
