@@ -2,7 +2,7 @@ __author__ = 'Minkyue'
 import random
 import math
 import class_bullet
-import  class_ship
+import class_ship
 from pico2d import *
 
 class Bullet:

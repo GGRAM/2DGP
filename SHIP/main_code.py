@@ -7,6 +7,7 @@ import class_bullet
 from  class_ship import Ship
 from class_bullet import Bullet
 import random
+import class_ship
 from pico2d import *
 
 name = "main_code"
@@ -14,14 +15,15 @@ running = None
 plykeydown = None
 x,y=0,0
 w,a,s,d = False,False,False,False
-boy = None
+ship = None
 sight = None
+
 class Sight:
     image = None
     def __init__(self):
-        if sight.image == None:
-            sight.image = load_image('sight.png')
-            self.x , self.y = 0,0
+        if Sight.image == None:
+            Sight.image = load_image('sight.png')
+        self.x , self.y = 0,0
 
     def draw(self):
         self.image.clip_draw(0,0,160,160,self.x,self.y)
@@ -46,6 +48,7 @@ def handle_events():
     global plykeydown
     global x,y
     global w,a,s,d
+    global ship
     events = get_events()
     for event in events:
         if event.type == SDL_QUIT:
@@ -53,50 +56,51 @@ def handle_events():
 
 
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
-            running = False
+            exit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_SPACE:
             plykeydown = 0
 
-        # 위 1 아래 2 왼쪽 3 오른쪽 4 좌상 5 좌하 6 우상 7 우하 8
+        # 움직임
         elif event.type == SDL_KEYDOWN and event.key == SDLK_w:
-            w = True
+            ship.GetKeyDown('w')
         elif event.type == SDL_KEYDOWN and event.key == SDLK_s:
-            s = True
+            ship.GetKeyDown('s')
         elif event.type == SDL_KEYDOWN and event.key == SDLK_a:
-            a = True
+            ship.GetKeyDown('a')
         elif event.type == SDL_KEYDOWN and event.key == SDLK_d:
-            d = True
+            ship.GetKeyDown('d')
         elif event.type == SDL_KEYUP and event.key == SDLK_w :
-            w = False
+            ship.GetKeyUp('w')
         elif event.type == SDL_KEYUP and event.key == SDLK_s :
-            s = False
+            ship.GetKeyUp('s')
         elif event.type == SDL_KEYUP and event.key == SDLK_a :
-            a = False
+            ship.GetKeyUp('a')
         elif event.type == SDL_KEYUP and event.key == SDLK_d :
-            d = False
+            ship.GetKeyUp('d')
         elif event.type == SDL_MOUSEMOTION:
             x, y = event.x, 600 - event.y
 
 def enter():
-    global boy
+    global ship
     global sight
-    boy = Ship()
+    global image
+    ship = Ship()
     sight = Sight()
     open_canvas()
 
 def update():
+    global ship
+    global sight
     handle_events()
-
-    boy.update()
+    ship.update()
     sight.update()
 
 
-
-
+def draw():
+    global ship
+    global sight
     clear_canvas()
-
-    boy.draw()
+    ship.draw()
     sight.draw()
     update_canvas()
-
     delay(0.04)

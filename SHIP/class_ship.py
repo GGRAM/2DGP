@@ -3,12 +3,16 @@ import random
 import math
 from pico2d import *
 import class_bullet
-import  class_ship
+import class_ship
+import main_code
+
+w,a,s,d = False,False,False,False
+
 class Ship:
     image = None
 
     global a,w,s,d
-
+    global ship
 
     STAY, SAIL= 0, 1
 
@@ -62,6 +66,27 @@ class Ship:
 
 
         self. state = self.SAIL
+    def GetKeyDown(self, key):
+        global w,a,d,s
+        if key == 'w':
+            w = True
+        elif key == 'd':
+            d = True
+        elif key == 's':
+            s = True
+        elif key == 'a':
+            a = True
+
+    def GetKeyUp(self, key):
+        global w,a,d,s
+        if key == 'w':
+            w = False
+        elif key == 'd':
+            d = False
+        elif key == 's':
+            s = False
+        elif key == 'a':
+            a = False
 
 
 
@@ -82,14 +107,15 @@ class Ship:
         self.scar = 0
         self.degree = 0
         self.HP = 100
+
         if Ship.image == None:
             Ship.image = load_image('ship.png')
-
 
     def draw(self):
         self.image.clip_draw(0, 0, 300, 300, self.x, self.y)
         self.image.clip_draw(300, 0, 300, 300, self.x, self.y)
         self.image.clip_draw(600, 0, 300, 300, self.x, self.y)
+        print("selfx : %d selfy : %d ", self.x, self.y)
 
 class ENEYMEY(Ship):
     pass
