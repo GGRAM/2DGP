@@ -22,7 +22,7 @@ def exit():
 
 
 
-def handle_events():
+def handle_events(frame_time):
     events = get_events()
     for event in events:
         if event.type == SDL_QUIT:
@@ -35,7 +35,7 @@ def handle_events():
 
 
 
-def draw():
+def draw(frame_time):
     global image
     clear_canvas()
     image.draw(400,300)
@@ -47,8 +47,8 @@ def draw():
 
 
 
-def update():
-    draw()
+def update(frame_time):
+    draw(frame_time)
 
 
 def pause():

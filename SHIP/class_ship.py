@@ -10,9 +10,24 @@ w,a,s,d = False,False,False,False
 
 class Ship:
     image = None
+    image_cannon = None
+    image_gun = None
+    PIXEL_PER_METER = (1000 / 800)           # 10 pixel 30 cm
+    RUN_SPEED_KMPH = 64.8                    # Km / Hour
+    RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
+    RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
+    RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
+                       # m / s^2
+    TIME_PER_ACTION = 0.5
+    ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
+    FRAMES_PER_ACTION = 8
+    RADIAN_PER_DGREE = 1/180*3.14
+
+
 
     global a,w,s,d
     global ship
+
 
     STAY, SAIL= 0, 1
 
@@ -22,15 +37,15 @@ class Ship:
 
     def handle_Sailing(self):
         if w == True:
-            if self.scar < 20 :
-                self.scar += 3
+            if self.scar < Ship.RUN_SPEED_PPS:
+                self.scar += 5
         if d == True:
-            self.degree -= 0.09
+            self.degree -= 0.005
         if a == True:
-            self.degree += 0.09
+            self.degree += 0.005
         if s == True:
-            if self.scar > -15 :
-                self. scar -= 2
+            if self.scar > -Ship.RUN_SPEED_PPS:
+                self. scar -= 5
 
     #fill here
 
@@ -46,19 +61,25 @@ class Ship:
     def get_bb(self):
          return self.x - 50, self.y - 50, self.x + 50, self.y + 50
 
-    def update(self):
+    def update(self,frame_time):
+        self.life_time += frame_time
+        self.total_frames += Ship.FRAMES_PER_ACTION * Ship.ACTION_PER_TIME * frame_time
+        self.frame = int(self.total_frames) % 8
 
-        self.frame=(self.frame+1)%8
-        self.vecX = math.cos(self.degree)*self.scar
-        self.vecY = math.sin(self.degree)*self.scar
+       #self.scar = self.scar*frame_time + self.accelation* frame_time * frame_time / 2
+        distance = self.scar * frame_time
+
+        self.vecX = math.cos(self.degree)*distance
+        self.vecY = math.sin(self.degree)*distance
 
         self.x += self.vecX
         self.y += self.vecY
         if self.scar > 0:
-            self.scar-=1
+            self.scar-=0.1
         elif self.scar < 0:
-            self.scar+=1
-
+            self.scar+=0.1
+        if self.scar <0.1 and self.scar >-0.1:
+            self.scar = 0
         self. handle_state[self.state](self)
 
 
@@ -107,15 +128,21 @@ class Ship:
         self.scar = 0
         self.degree = 0
         self.HP = 100
+        self.accelation = 0
+        self.life_time = 0.0
+        self.total_frames = 0.0
 
         if Ship.image == None:
-            Ship.image = load_image('ship.png')
+            Ship.image = load_image('player_ship.png')
+            Ship.image_cannon = load_image('player_cannon.png')
+            Ship.image_gun =load_image('player_gun.png')
 
-    def draw(self):
-        self.image.clip_draw(0, 0, 300, 300, self.x, self.y)
-        self.image.clip_draw(300, 0, 300, 300, self.x, self.y)
-        self.image.clip_draw(600, 0, 300, 300, self.x, self.y)
-        print("selfx : %d selfy : %d ", self.x, self.y)
+    def draw(self,frame_time):
+        #self.image.clip_draw(0, 0, 300, 300, self.x, self.y)
+        self.image.rotate_draw(self.degree, self.x,self.y, 100,100)
+        self.image_cannon.rotate_draw(self.degree, self.x,self.y, 100,100)
+        self.image_gun.rotate_draw(self.degree, self.x,self.y, 100,100)
+        print(self.scar, Ship. RUN_SPEED_PPS)
 
 class ENEYMEY(Ship):
     pass

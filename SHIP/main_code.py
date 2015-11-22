@@ -9,6 +9,7 @@ from class_bullet import Bullet
 import random
 import class_ship
 from pico2d import *
+import game_framework
 
 name = "main_code"
 running = None
@@ -65,6 +66,7 @@ def destroy_world():
 
 def enter():
     open_canvas()
+    game_framework.reset_time()
 
     create_world()
 
@@ -72,7 +74,7 @@ def exit():
     destroy_world()
     close_canvas()
 
-def handle_events():
+def handle_events(frame_time):
     global running
     global plykeydown
     global x,y
@@ -111,18 +113,18 @@ def handle_events():
 
 
 
-def update():
+def update(frame_time):
     global ship
     global sight
-    handle_events()
-    ship.update()
+    handle_events(frame_time)
+    ship.update(frame_time)
     sight.update()
 
 
-def draw():
+def draw(frame_time):
 
     clear_canvas()
-    ship.draw()
+    ship.draw(frame_time)
     sight.draw()
     update_canvas()
 
