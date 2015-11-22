@@ -43,6 +43,35 @@ def collide(a, b):
 
     return True
 
+
+def create_world():
+    global ship, sight
+
+    ship = Ship()
+    sight = Sight()
+
+
+
+
+
+def destroy_world():
+    global ship, sight
+
+    del(ship)
+    del(sight)
+
+
+
+
+def enter():
+    open_canvas()
+
+    create_world()
+
+def exit():
+    destroy_world()
+    close_canvas()
+
 def handle_events():
     global running
     global plykeydown
@@ -80,13 +109,7 @@ def handle_events():
         elif event.type == SDL_MOUSEMOTION:
             x, y = event.x, 600 - event.y
 
-def enter():
-    global ship
-    global sight
-    global image
-    ship = Ship()
-    sight = Sight()
-    open_canvas()
+
 
 def update():
     global ship
@@ -97,10 +120,9 @@ def update():
 
 
 def draw():
-    global ship
-    global sight
+
     clear_canvas()
     ship.draw()
     sight.draw()
     update_canvas()
-    delay(0.04)
+
