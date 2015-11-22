@@ -27,7 +27,8 @@ class Sight:
         self.x , self.y = 0,0
 
     def draw(self):
-        self.image.clip_draw(0,0,160,160,self.x,self.y)
+        #self.image.clip_draw(0,0,160,160,self.x,self.y)
+        self.image.rotate_draw(0, self.x,self.y, 50,50)
     def update(self):
         global x,y
         self.x=x
@@ -117,7 +118,7 @@ def update(frame_time):
     global ship
     global sight
     handle_events(frame_time)
-    ship.update(frame_time)
+    ship.update(frame_time,x,y)
     sight.update()
 
 
