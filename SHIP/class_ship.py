@@ -7,6 +7,7 @@ import class_ship
 import main_code
 
 w,a,s,d = False,False,False,False
+bullet = None
 
 def getdegree( x1, y1, x2, y2):
     a = x2 - x1
@@ -101,6 +102,9 @@ class Ship:
         self.degree_gun = getdegree(self.gun_x,self.gun_y,x,y)
         self.handle_state[self.state](self)
 
+       # for class_bullet in bullets:
+       #     bullet.update()
+
 
     def changestate(self):
         self. state = self.SAIL
@@ -169,6 +173,9 @@ class Ship:
         self.image_cannon.rotate_draw(self.degree_cannon, self.cannon_x,self.cannon_y, 100*Ship.PIXEL_PER_METER,100*Ship.PIXEL_PER_METER)
         self.image_gun.rotate_draw(self.degree_gun, self.gun_x,self.gun_y, 100*Ship.PIXEL_PER_METER,100*Ship.PIXEL_PER_METER)
 
+    def fire(self):
+        global bullet
+        bullets = [Bullet(self.gun_degree,self.x,self.y)]
 
 class ENEYMEY(Ship):
     pass

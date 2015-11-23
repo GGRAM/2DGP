@@ -4,7 +4,7 @@ sys.path.append('../LabsAll/Labs')
 
 import title_state
 import class_bullet
-from  class_ship import Ship
+from class_ship import Ship
 from class_bullet import Bullet
 import random
 import class_ship
