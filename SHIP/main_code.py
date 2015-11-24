@@ -10,7 +10,8 @@ import random
 import class_ship
 from pico2d import *
 import game_framework
-
+from class_sea import Sea
+import class_sea
 name = "main_code"
 running = None
 plykeydown = None
@@ -18,6 +19,7 @@ x,y=0,0
 w,a,s,d = False,False,False,False
 ship = None
 sight = None
+sea = None
 
 class Sight:
     image = None
@@ -47,20 +49,22 @@ def collide(a, b):
 
 
 def create_world():
-    global ship, sight
+    global ship, sight, sea
 
     ship = Ship()
     sight = Sight()
+    sea = Sea()
 
 
 
 
 
 def destroy_world():
-    global ship, sight
+    global ship, sight,sea
 
     del(ship)
     del(sight)
+    del(sea)
 
 
 
@@ -125,6 +129,7 @@ def update(frame_time):
 def draw(frame_time):
 
     clear_canvas()
+    sea.draw()
     ship.draw(frame_time)
     sight.draw()
     update_canvas()
