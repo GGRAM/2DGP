@@ -175,7 +175,7 @@ class Ship:
 
     def fire(self):
         global bullet
-       bullets = [Bullet(self.gun_degree,self.x,self.y)]
+        bullets = [Bullet(self.gun_degree,self.x,self.y)]
 
 class ENEYMEY(Ship):
     pass
