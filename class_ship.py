@@ -96,6 +96,15 @@ class Ship:
         if self.scar <0.1 and self.scar >-0.1:
             self.scar = 0
 
+        if self. x > 750:
+            self.x = 750
+        elif self.x < 50:
+            self. x = 50
+        if self.y>550:
+            self.y = 550
+        elif self.y <50:
+            self.y = 50
+
         self.gun_x = self.x+25*math.cos(self.degree)*Ship.PIXEL_PER_METER
         self.gun_y = self.y+25*math.sin(self.degree)*Ship.PIXEL_PER_METER
         self.cannon_x = self.x-30*math.cos(self.degree)*Ship.PIXEL_PER_METER
@@ -228,6 +237,9 @@ class Bullet:
 
         self.x += self.vecX
         self.y += self.vecY
+
+
+
 
 
     def getBB(self):

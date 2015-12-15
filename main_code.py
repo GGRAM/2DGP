@@ -18,10 +18,22 @@ x,y=0,0
 w,a,s,d = False,False,False,False
 ship = None
 sight = None
+sea = None
 weapon = None
 member = None
 box = None
 Box = None
+weapon_image_bullet = None
+weapon_image_cannon = None
+
+class Sea:
+    image = None
+    def __init__(self):
+        if Sea.image == None:
+            Sea.image = load_image('background.png')
+    def draw(self):
+        self.image.clip_draw(0,0,800,600,400,300)
+
 class Sight:
     image = None
     def __init__(self):
@@ -75,24 +87,27 @@ class EnemyBox:
         return self.x -20, self.y - 20,  self.x + 20, self.y + 20
 
 def create_world():
-    global ship, sight, Box , weapon
-
+    global ship, sight, Box , weapon, sea
+    global weapon_image_bullet,weapon_image_cannon
     ship = Ship()
     sight = Sight()
+    sea = Sea()
     weapon = 1
     Box = [EnemyBox() for i in range(10)]
+    weapon_image_bullet = load_image('weapon_select2.png')
+    weapon_image_cannon = load_image('weapon_select1.png')
 
 
 
 
 
 def destroy_world():
-    global ship, sight, Box
+    global ship, sight, Box, sea
 
     del(ship)
     del(sight)
     del(Box)
-
+    del(sea)
 
 
 
@@ -199,9 +214,18 @@ def update(frame_time):
 def draw(frame_time):
 
     clear_canvas()
+    sea.draw()
+
+
     for box in Box:
         box.draw()
     ship.draw(frame_time)
+    if weapon == 1:
+        weapon_image_bullet.clip_draw(0,0,150,80,300-200,40)
+        weapon_image_cannon.clip_draw(150,0,150,80,450-200,40)
+    else:
+        weapon_image_cannon.clip_draw(0,0,150,80,450-200,40)
+        weapon_image_bullet.clip_draw(150, 0,150,80,300-200,40)
     sight.draw()
 
 
