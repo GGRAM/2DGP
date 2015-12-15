@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "mygame.py", line 18, in <module>
+  File "K:\UNIV\2DGP\SHIP\game_framework.py", line 95, in run
+    stack[-1].update(frame_time)
+  File "K:\UNIV\2DGP\SHIP\main_code.py", line 121, in update
+    ship.update(frame_time,x,y)
+NameError: name 'ship' is not defined
+Traceback (most recent call last):
+  File "mygame.py", line 18, in <module>
+  File "K:\UNIV\2DGP\SHIP\game_framework.py", line 95, in run
+    stack[-1].update(frame_time)
+  File "K:\UNIV\2DGP\SHIP\main_code.py", line 121, in update
+    ship.update(frame_time,x,y)
+NameError: name 'ship' is not defined
