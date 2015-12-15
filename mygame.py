@@ -13,6 +13,6 @@ import game_framework
 import start_state
 import title_state
 import main_code
-import class_bullet
+
 import  class_ship
 game_framework.run(start_state)

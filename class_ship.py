@@ -5,10 +5,10 @@ from pico2d import *
 #import class_bullet
 import class_ship
 import main_code
-from class_bullet import Bullet
+
 w,a,s,d = False,False,False,False
 bullet = None
-
+cannon = None
 def getdegree( x1, y1, x2, y2):
     a = x2 - x1
     b= y2 - y1
@@ -17,7 +17,7 @@ def getdegree( x1, y1, x2, y2):
         temp = math.acos(a / c)
     else :
         temp = 3.14*2-math.acos(a / c)
-    print (a, b, c)
+    #print (a, b, c)
     return temp
 
 
@@ -40,6 +40,8 @@ class Ship:
 
     global a,w,s,d
     global ship
+    player_bullet = []
+    player_cannon = []
 
 
     STAY, SAIL= 0, 1
@@ -101,6 +103,12 @@ class Ship:
         self.degree_cannon = getdegree(self.cannon_x,self.cannon_y,x,y)
         self.degree_gun = getdegree(self.gun_x,self.gun_y,x,y)
         self.handle_state[self.state](self)
+        for bullet in self.player_bullet:
+            bullet.update()
+        for cannon in self.player_cannon:
+            cannon.update()
+
+
 
        # for class_bullet in bullets:
        #     bullet.update()
@@ -141,6 +149,9 @@ class Ship:
 
 
     def __init__(self):
+        global bullet ,cannon
+        bullet = 0
+        cannon = 0
         self.x, self.y = random.randint(100, 700), 90
         self.frame = random.randint(0, 7)
         self.run_frames = 0
@@ -162,23 +173,87 @@ class Ship:
         self.gun_y = self.y+25*math.sin(self.degree)*Ship.PIXEL_PER_METER
         self.cannon_x = self.x-30*math.cos(self.degree)*Ship.PIXEL_PER_METER,
         self.cannon_y = self.y-30*math.sin(self.degree)*Ship.PIXEL_PER_METER
+
         if Ship.image == None:
             Ship.image = load_image('player_ship.png')
             Ship.image_cannon = load_image('player_cannon.png')
             Ship.image_gun =load_image('player_gun.png')
+
+        for bullet in self.player_bullet:
+            bullet.update()
+        for cannon in self.player_cannon:
+            cannon.update()
+
 
     def draw(self,frame_time):
         #self.image.clip_draw(0, 0, 300, 300, self.x, self.y)
         self.image.rotate_draw(self.degree, self.x,self.y, 100*Ship.PIXEL_PER_METER,100*Ship.PIXEL_PER_METER)
         self.image_cannon.rotate_draw(self.degree_cannon, self.cannon_x,self.cannon_y, 100*Ship.PIXEL_PER_METER,100*Ship.PIXEL_PER_METER)
         self.image_gun.rotate_draw(self.degree_gun, self.gun_x,self.gun_y, 100*Ship.PIXEL_PER_METER,100*Ship.PIXEL_PER_METER)
+        for bullet in self.player_bullet:
+            bullet.draw()
+        for cannon in self.player_cannon:
+            cannon.draw()
 
-    def fire(self):
-        global player_bullet
-        bullet = Bullet(self.degree_cannon, self.x, self.y)
-        player_bullet.append(bullet)
+    def fire(self, num):
+        if num==1:
+            bullet = Bullet(self.degree_gun, self.gun_x, self.gun_y)
+            self.player_bullet.append(bullet)
+        else:
+            cannon = Cannon(self.degree_cannon, self.cannon_x, self.cannon_y)
+            self.player_cannon.append(cannon)
+
 
 
 
 class ENEYMEY(Ship):
     pass
+
+class Bullet:
+    image=None
+    def __init__(self,degree,x,y):
+        self.scar = 20
+        self.degree = degree
+        self.x , self.y = x,y
+        self.vecX, self.vecY=0,0
+        if Bullet.image == None:
+            Bullet.image = load_image('bullet.png')
+
+    def draw(self):
+        self.image.rotate_draw(self.degree, self.x,self.y, 100*Ship.PIXEL_PER_METER/3.5,100*Ship.PIXEL_PER_METER/3.5)
+    def update(self):
+
+        self.vecX = math.cos(self.degree)*self.scar
+        self.vecY = math.sin(self.degree)*self.scar
+
+        self.x += self.vecX
+        self.y += self.vecY
+
+
+    def getBB(self):
+        return self.x+math.cos(self.degree)*4 , self.y+math.sin(self.degree)*4
+
+
+class Cannon:
+    image=None
+    def __init__(self,degree,x,y):
+        self.scar = 10
+        self.degree = degree
+        self.x , self.y = x,y
+        self.vecX, self.vecY=0,0
+        if Cannon.image == None:
+            Cannon.image = load_image('cannon_ball.png')
+
+    def draw(self):
+        self.image.rotate_draw(self.degree, self.x,self.y, 100*Ship.PIXEL_PER_METER/3,100*Ship.PIXEL_PER_METER/3)
+
+    def update(self):
+        self.vecX = math.cos(self.degree)*self.scar
+        self.vecY = math.sin(self.degree)*self.scar
+
+        self.x += self.vecX
+        self.y += self.vecY
+
+
+    def getBB(self):
+        return self.x+math.cos(self.degree)*5 , self.y+math.sin(self.degree)*5
